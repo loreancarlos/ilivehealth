@@ -1,51 +1,69 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from 'react';
+import { AppContext } from '@/context/AppContext';
+import { MapPin } from 'lucide-react';
+import LocationButton from './LocationButton';
 
 interface AddressBarProps {
   address?: string;
 }
 
-const AddressBar: React.FC<AddressBarProps> = ({ address = "Av. Paulista, 1000 - São Paulo, SP" }) => {
-  const [currentAddress, setCurrentAddress] = useState(address);
+const AddressBar: React.FC<AddressBarProps> = ({ address }) => {
+  const { userLocation } = useContext(AppContext);
+  const [currentAddress, setCurrentAddress] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  // Effect to reverse geocode the coordinates into an address
+  useEffect(() => {
+    const reverseGeocode = async () => {
+      if (!userLocation) return;
+      
+      setLoading(true);
+      try {
+        // We'll use the browser's native fetch API to get the address from coordinates
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${userLocation.latitude}&lon=${userLocation.longitude}&zoom=18&addressdetails=1`,
+          {
+            headers: {
+              'Accept-Language': 'pt-BR',
+            },
+          }
+        );
+        const data = await response.json();
+        
+        if (data && data.display_name) {
+          // Extract the most important parts of the address for display
+          const parts = data.display_name.split(',');
+          setCurrentAddress(`${parts[0]}, ${parts[1]}`);
+        }
+      } catch (error) {
+        console.error('Error fetching address:', error);
+        setCurrentAddress('Localização encontrada');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (userLocation) {
+      reverseGeocode();
+    }
+  }, [userLocation]);
 
   return (
-    <div className="bg-white px-4 pt-1 pb-3 border-b border-gray-200">
-      <div className="flex items-center text-sm text-gray-600">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-4 w-4 mr-1"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-          />
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-          />
-        </svg>
-        <span>{currentAddress}</span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-4 w-4 ml-1"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
+    <div className="bg-white w-full py-2 px-4 flex items-center justify-between shadow-sm">
+      <div className="flex items-center">
+        <MapPin className="h-5 w-5 text-blue-500 mr-2" />
+        <div>
+          <p className="text-sm font-semibold">
+            {loading ? 'Buscando endereço...' : 
+             currentAddress ? currentAddress : 
+             address ? address : 
+             'Defina sua localização'}
+          </p>
+          <p className="text-xs text-gray-500">Entregar em</p>
+        </div>
       </div>
+      
+      <LocationButton />
     </div>
   );
 };
