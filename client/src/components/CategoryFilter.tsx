@@ -16,22 +16,13 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ categories, onSelect })
             onClick={() => onSelect(category)}
           >
             <div
-              className={`w-16 h-16 ${category.bgColor} rounded-full flex items-center justify-center mb-2`}
+              className={`w-16 h-16 ${category.bgColor} rounded-full flex items-center justify-center mb-2 overflow-hidden`}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-7 w-7 text-gray-700"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="1.5"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d={category.icon}
-                />
-              </svg>
+              <img 
+                src={category.imageUrl}
+                alt={category.name}
+                className="h-10 w-10 object-cover"
+              />
             </div>
             <span className="text-xs font-medium text-center">{category.name}</span>
           </button>

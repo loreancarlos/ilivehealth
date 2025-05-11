@@ -14,31 +14,31 @@ export const categories: Category[] = [
   {
     id: "cat1",
     name: "Consultas",
-    icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/3774/3774299.png",
     bgColor: "bg-blue-100",
   },
   {
     id: "cat2",
     name: "Estética",
-    icon: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z",
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/2933/2933116.png",
     bgColor: "bg-pink-100",
   },
   {
     id: "cat3",
     name: "Exames",
-    icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4",
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/3004/3004458.png",
     bgColor: "bg-green-100",
   },
   {
     id: "cat4",
     name: "Dentistas",
-    icon: "M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z",
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/3004/3004633.png",
     bgColor: "bg-yellow-100",
   },
   {
     id: "cat5",
     name: "Mais",
-    icon: "M4 6h16M4 10h16M4 14h16M4 18h16",
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/748/748133.png",
     bgColor: "bg-purple-100",
   },
 ];
