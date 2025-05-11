@@ -1,0 +1,74 @@
+Crie um aplicativo web responsivo (Mobile First) no estilo iFood, chamado iLive, que conecte usuários a clínicas e profissionais da área da saúde e estética. O objetivo é permitir que pacientes encontrem, filtrem, agendem e paguem por consultas e procedimentos em uma plataforma prática e unificada.
+
+🧩 Funcionalidades e Requisitos
+📱 Interface do Usuário (Mobile First)
+Design responsivo, priorizando usabilidade em dispositivos móveis.
+
+Home com campo de busca e filtros por localização, especialidade, tipo de procedimento.
+
+Páginas individuais para clínicas, profissionais e procedimentos.
+
+Tela de login/cadastro para usuários e clínicas.
+
+🏥 Cadastro de Clínicas
+Nome da clínica, CNPJ, endereço com geolocalização (API de mapas).
+
+Especialidades e serviços oferecidos.
+
+Imagens, descrição e horário de funcionamento.
+
+Vínculo com profissionais registrados.
+
+👩‍⚕️ Cadastro de Profissionais
+Nome, especialidade, CRM ou registro correspondente.
+
+Agenda de disponibilidade (conectada ao sistema de agendamento).
+
+Avaliações e comentários de usuários.
+
+Vínculo com uma ou mais clínicas.
+
+💉 Cadastro de Procedimentos
+Nome do procedimento, descrição, duração média, preço.
+
+Especialidade relacionada.
+
+Profissionais habilitados para realizar o procedimento.
+
+📆 Agendamento de Consultas e Procedimentos
+Tela de agendamento com seleção de data, horário e profissional.
+
+Sincronização com agenda do profissional (evitar conflitos).
+
+Confirmação de agendamento e opção de reembolso/cancelamento.
+
+📍 Geolocalização e Filtro por Proximidade
+Integração com API de mapas (ex: Google Maps) para calcular distância entre usuário e clínicas.
+
+Filtro de clínicas mais próximas.
+
+💳 Pagamento Integrado
+Integração com Stripe para pagamentos via cartão de crédito.
+
+Pagamento feito no momento da marcação.
+
+Comprovação e confirmação automática do pagamento.
+
+🔐 Autenticação
+Login/cadastro via email, Google ou celular.
+
+Diferenciação de tipos de usuário: Cliente, Profissional, Clínica/Admin.
+
+⚙️ Tecnologias Sugeridas
+Frontend: React.js (com Tailwind CSS)
+
+Frontend: Design Modular
+
+Geolocalização e Mapas: Google Maps API
+
+📦 Entregáveis Esperados
+Frontend funcional com navegação entre páginas principais, dados fictícios para demonstração simulando informações cadastradas em um banco de dados. Contrua o código com Design Modular
+
+IMPORTANTE: TUDO RELACIONADO A BACKEND NÃO DE VE SER DESENVOLVIDO AGORA, ESTE É UM MVP BASEADO SOMENTE NO FRONT END PARA APRESENTAÇÃO A SÓCIOS.
+
+Deploy funcional com demonstração.
