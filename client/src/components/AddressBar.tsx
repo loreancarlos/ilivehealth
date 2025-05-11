@@ -1,16 +1,48 @@
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '@/context/AppContext';
 import { MapPin } from 'lucide-react';
-import LocationButton from './LocationButton';
+import { useGeolocation } from '@/hooks/useGeolocation';
+import { useToast } from '@/hooks/use-toast';
 
 interface AddressBarProps {
   address?: string;
 }
 
 const AddressBar: React.FC<AddressBarProps> = ({ address }) => {
-  const { userLocation } = useContext(AppContext);
+  // Hooks devem ser chamados na mesma ordem em todas as renderizações
+  const { userLocation, setUserLocation } = useContext(AppContext);
   const [currentAddress, setCurrentAddress] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const { toast } = useToast();
+  const { location, loading: geoLoading, error, getCurrentPosition } = useGeolocation();
+
+  // Auto-get location when component mounts
+  useEffect(() => {
+    // Short delay to ensure UI is rendered before requesting permissions
+    const timer = setTimeout(() => {
+      getCurrentPosition();
+    }, 500);
+    
+    return () => clearTimeout(timer);
+  }, [getCurrentPosition]);
+
+  // Set the user location when the location is available
+  useEffect(() => {
+    if (location) {
+      setUserLocation(location);
+    }
+  }, [location, setUserLocation]);
+
+  // Show error toast if geolocation failed
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: 'Erro de localização',
+        description: `Não foi possível obter sua localização: ${error}`,
+        variant: 'destructive',
+      });
+    }
+  }, [error, toast]);
 
   // Effect to reverse geocode the coordinates into an address
   useEffect(() => {
@@ -49,21 +81,19 @@ const AddressBar: React.FC<AddressBarProps> = ({ address }) => {
   }, [userLocation]);
 
   return (
-    <div className="bg-white w-full py-2 px-4 flex items-center justify-between shadow-sm">
+    <div className="bg-white w-full py-2 px-4 flex items-center shadow-sm">
       <div className="flex items-center">
         <MapPin className="h-5 w-5 text-blue-500 mr-2" />
         <div>
           <p className="text-sm font-semibold">
-            {loading ? 'Buscando endereço...' : 
+            {loading || geoLoading ? 'Buscando sua localização...' : 
              currentAddress ? currentAddress : 
              address ? address : 
-             'Defina sua localização'}
+             'Aguardando permissão de localização'}
           </p>
           <p className="text-xs text-gray-500">Entregar em</p>
         </div>
       </div>
-      
-      <LocationButton />
     </div>
   );
 };
