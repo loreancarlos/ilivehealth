@@ -365,7 +365,7 @@ export const nearbyClinics: Clinic[] = [
     id: "clinic3",
     name: "Centro Médico Vida",
     images: [
-      "https://pixabay.com/get/g5f72c1b3fb69db5f26a22b6d6b9cb3f3a7fa7e9d7ca0cb9ec61cf069f30d2c7d88d4a73e1bffd5c23c2dc4c31afbf89de5e0ae86bcd26f2e3cf01fceb95bd8c9_1280.jpg"
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-d9KifLJo3SOElmcQ7sNq7otWq31jrtvLyw&s"
     ],
     address: {
       street: "Av. Brigadeiro Faria Lima",

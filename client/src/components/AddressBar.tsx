@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from 'react';
-import { AppContext } from '@/context/AppContext';
-import { MapPin } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { useContext, useEffect, useState } from "react";
+import { AppContext } from "@/context/AppContext";
+import { MapPin } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface AddressBarProps {
   address?: string;
@@ -11,10 +11,10 @@ interface AddressBarProps {
 function requestLocation(): Promise<{ latitude: number; longitude: number }> {
   return new Promise((resolve, reject) => {
     if (!navigator.geolocation) {
-      reject(new Error('Geolocalização não é suportada pelo seu navegador'));
+      reject(new Error("Geolocalização não é suportada pelo seu navegador"));
       return;
     }
-    
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
         resolve({
@@ -23,16 +23,16 @@ function requestLocation(): Promise<{ latitude: number; longitude: number }> {
         });
       },
       (error) => {
-        let errorMessage = 'Erro desconhecido ao buscar localização';
+        let errorMessage = "Erro desconhecido ao buscar localização";
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            errorMessage = 'Permissão negada para acessar sua localização';
+            errorMessage = "Permissão negada para acessar sua localização";
             break;
           case error.POSITION_UNAVAILABLE:
-            errorMessage = 'Informações de localização indisponíveis';
+            errorMessage = "Informações de localização indisponíveis";
             break;
           case error.TIMEOUT:
-            errorMessage = 'Tempo esgotado ao buscar sua localização';
+            errorMessage = "Tempo esgotado ao buscar sua localização";
             break;
         }
         reject(new Error(errorMessage));
@@ -47,26 +47,29 @@ function requestLocation(): Promise<{ latitude: number; longitude: number }> {
 }
 
 // Função para converter coordenadas em endereço
-async function getAddressFromCoordinates(coords: { latitude: number; longitude: number }): Promise<string> {
+async function getAddressFromCoordinates(coords: {
+  latitude: number;
+  longitude: number;
+}): Promise<string> {
   try {
     const response = await fetch(
       `https://nominatim.openstreetmap.org/reverse?format=json&lat=${coords.latitude}&lon=${coords.longitude}&zoom=18&addressdetails=1`,
       {
         headers: {
-          'Accept-Language': 'pt-BR',
+          "Accept-Language": "pt-BR",
         },
       }
     );
     const data = await response.json();
-    
+    console.log(data);
     if (data && data.display_name) {
-      const parts = data.display_name.split(',');
-      return `${parts[0]}, ${parts[1]}`;
+      const parts = data.display_name.split(",");
+      return `${parts[0]},${parts[1]}`;
     }
-    return 'Localização encontrada';
+    return "Localização encontrada";
   } catch (error) {
-    console.error('Error fetching address:', error);
-    return 'Localização encontrada';
+    console.error("Error fetching address:", error);
+    return "Localização encontrada";
   }
 }
 
@@ -79,15 +82,15 @@ const AddressBar: React.FC<AddressBarProps> = ({ address }) => {
   // Efeito para solicitar a localização ao montar o componente
   useEffect(() => {
     let isMounted = true;
-    
+
     async function getLocation() {
       if (isMounted) setIsLoading(true);
-      
+
       try {
         const location = await requestLocation();
         if (isMounted) {
           setUserLocation(location);
-          
+
           // Buscar endereço
           const address = await getAddressFromCoordinates(location);
           if (isMounted) setCurrentAddress(address);
@@ -95,18 +98,21 @@ const AddressBar: React.FC<AddressBarProps> = ({ address }) => {
       } catch (error) {
         if (isMounted) {
           toast({
-            title: 'Erro de localização',
-            description: error instanceof Error ? error.message : 'Erro ao obter localização',
-            variant: 'destructive',
+            title: "Erro de localização",
+            description:
+              error instanceof Error
+                ? error.message
+                : "Erro ao obter localização",
+            variant: "destructive",
           });
         }
       } finally {
         if (isMounted) setIsLoading(false);
       }
     }
-    
+
     getLocation();
-    
+
     return () => {
       isMounted = false;
     };
@@ -118,10 +124,13 @@ const AddressBar: React.FC<AddressBarProps> = ({ address }) => {
         <MapPin className="h-5 w-5 text-blue-500 mr-2" />
         <div>
           <p className="text-sm font-semibold">
-            {isLoading ? 'Buscando sua localização...' : 
-             currentAddress ? currentAddress : 
-             address ? address : 
-             'Aguardando permissão de localização'}
+            {isLoading
+              ? "Buscando sua localização..."
+              : currentAddress
+              ? currentAddress
+              : address
+              ? address
+              : "Aguardando permissão de localização"}
           </p>
           <p className="text-xs text-gray-500">Entregar em</p>
         </div>
