@@ -20,15 +20,15 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ categories, onSelect })
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className={`h-8 w-8 ${category.icon}`}
+                className="h-7 w-7 text-gray-700"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
+                strokeWidth="1.5"
               >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth="2"
                   d={category.icon}
                 />
               </svg>

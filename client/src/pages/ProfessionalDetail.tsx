@@ -31,7 +31,7 @@ const ProfessionalDetail: React.FC = () => {
     <div className="pb-16">
       {/* Professional Profile Header */}
       <div className="relative">
-        <div className="bg-gradient-to-r from-secondary to-primary h-32"></div>
+        <div className="bg-gradient-to-r from-blue-600 to-blue-400 h-32"></div>
         <div className="px-4">
           <div className="relative -top-16 flex flex-col items-center">
             <img

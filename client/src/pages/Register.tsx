@@ -34,7 +34,7 @@ const Register: React.FC = () => {
   return (
     <div className="px-4 py-8">
       <div className="flex justify-center mb-8">
-        <span className="text-primary font-bold text-3xl">iLive</span>
+        <span className="text-primary font-bold text-3xl">iLive<span className="text-accent text-lg">health</span></span>
       </div>
       
       <h1 className="text-2xl font-bold text-center mb-6">Crie sua conta</h1>

@@ -41,7 +41,7 @@ const Header = () => {
             </button>
           )}
           <div className="flex items-center">
-            <span className="text-primary font-bold text-2xl">iLive</span>
+            <span className="text-primary font-bold text-2xl">iLive<span className="text-accent text-sm">health</span></span>
           </div>
         </div>
         <div>

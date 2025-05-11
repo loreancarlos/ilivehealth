@@ -37,7 +37,7 @@ const AppointmentSuccess: React.FC = () => {
       <p className="text-gray-600 text-center mb-8">Sua consulta foi agendada com sucesso.</p>
       
       <div className="w-full bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 mb-8">
-        <div className="p-4 bg-secondary text-white">
+        <div className="p-4 bg-primary text-white">
           <h2 className="font-semibold text-lg">Detalhes do agendamento</h2>
         </div>
         <div className="p-4">
