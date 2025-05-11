@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 interface GeolocationState {
   loading: boolean;
@@ -9,15 +9,15 @@ interface GeolocationState {
   } | null;
 }
 
-export const useGeolocation = () => {
+export const useGeolocation = (autoRequest = false) => {
   const [state, setState] = useState<GeolocationState>({
-    loading: false,
+    loading: autoRequest, // Começar carregando se autoRequest for true
     error: null,
     location: null,
   });
 
-  // Function to get the current position
-  const getCurrentPosition = () => {
+  // Function to get the current position - usando useCallback para evitar recriação desnecessária
+  const getCurrentPosition = useCallback(() => {
     setState(prev => ({ ...prev, loading: true, error: null }));
 
     if (!navigator.geolocation) {
@@ -67,7 +67,14 @@ export const useGeolocation = () => {
         maximumAge: 0,
       }
     );
-  };
+  }, []);
+
+  // Solicitar localização automaticamente na primeira renderização se autoRequest for true
+  useEffect(() => {
+    if (autoRequest) {
+      getCurrentPosition();
+    }
+  }, [autoRequest, getCurrentPosition]);
 
   // Return the state and a function to refresh the location
   return {
