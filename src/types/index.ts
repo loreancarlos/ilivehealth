@@ -99,7 +99,7 @@ export interface Appointment {
   procedureId: string;
   date: string;
   time: string;
-  status: 'scheduled' | 'completed' | 'canceled';
+  status: "scheduled" | "completed" | "canceled";
   price: number;
   paymentMethod: string;
   confirmationCode: string;
@@ -109,7 +109,6 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  phoneNumber: string;
-  address?: Address;
-  appointments?: Appointment[];
+  phone: string;
+  password: string;
 }

@@ -3,8 +3,8 @@ import { createContext, useState, ReactNode, useCallback } from "react";
 interface AppContextType {
   showBackButton: boolean;
   setShowBackButton: (show: boolean) => void;
-  showLoginModal: boolean;
-  setShowLoginModal: (show: boolean) => void;
+  showNotificationModal: boolean;
+  setShowNotificationModal: (show: boolean) => void;
   showFilterModal: boolean;
   setShowFilterModal: (show: boolean) => void;
   isLoggedIn: boolean;
@@ -13,14 +13,16 @@ interface AppContextType {
     latitude: number;
     longitude: number;
   } | null;
-  setUserLocation: (location: { latitude: number; longitude: number } | null) => void;
+  setUserLocation: (
+    location: { latitude: number; longitude: number } | null
+  ) => void;
 }
 
 export const AppContext = createContext<AppContextType>({
   showBackButton: false,
   setShowBackButton: () => {},
-  showLoginModal: false,
-  setShowLoginModal: () => {},
+  showNotificationModal: false,
+  setShowNotificationModal: () => {},
   showFilterModal: false,
   setShowFilterModal: () => {},
   isLoggedIn: false,
@@ -35,20 +37,22 @@ interface AppProviderProps {
 
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [showBackButton, setShowBackButton] = useState<boolean>(false);
-  const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
+  const [showNotificationModal, setShowNotificationModal] =
+    useState<boolean>(false);
   const [showFilterModal, setShowFilterModal] = useState<boolean>(false);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(
-    null
-  );
+  const [userLocation, setUserLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
 
   // Memoized setters to prevent unnecessary re-renders
   const handleSetShowBackButton = useCallback((show: boolean) => {
     setShowBackButton(show);
   }, []);
 
-  const handleSetShowLoginModal = useCallback((show: boolean) => {
-    setShowLoginModal(show);
+  const handleSetShowNotificationModal = useCallback((show: boolean) => {
+    setShowNotificationModal(show);
   }, []);
 
   const handleSetShowFilterModal = useCallback((show: boolean) => {
@@ -71,16 +75,15 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
       value={{
         showBackButton,
         setShowBackButton: handleSetShowBackButton,
-        showLoginModal,
-        setShowLoginModal: handleSetShowLoginModal,
+        showNotificationModal,
+        setShowNotificationModal: handleSetShowNotificationModal,
         showFilterModal,
         setShowFilterModal: handleSetShowFilterModal,
         isLoggedIn,
         setIsLoggedIn: handleSetIsLoggedIn,
         userLocation,
         setUserLocation: handleSetUserLocation,
-      }}
-    >
+      }}>
       {children}
     </AppContext.Provider>
   );

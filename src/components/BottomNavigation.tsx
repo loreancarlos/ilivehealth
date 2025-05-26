@@ -10,15 +10,13 @@ const BottomNavigation = () => {
           onClick={() => navigate("/")}
           className={`flex flex-col items-center py-1 px-3 ${
             location === "/" ? "text-primary" : "text-gray-500"
-          }`}
-        >
+          }`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6"
             fill="none"
             viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
+            stroke="currentColor">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -33,15 +31,13 @@ const BottomNavigation = () => {
           onClick={() => navigate("/appointment")}
           className={`flex flex-col items-center py-1 px-3 ${
             location.includes("appointment") ? "text-primary" : "text-gray-500"
-          }`}
-        >
+          }`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6"
             fill="none"
             viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
+            stroke="currentColor">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -53,18 +49,16 @@ const BottomNavigation = () => {
         </button>
 
         <button
-          onClick={() => navigate("/login")}
+          onClick={() => navigate("/profile")}
           className={`flex flex-col items-center py-1 px-3 ${
-            location.includes("login") || location.includes("register") ? "text-primary" : "text-gray-500"
-          }`}
-        >
+            location === "/profile" ? "text-primary" : "text-gray-500"
+          }`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6"
             fill="none"
             viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
+            stroke="currentColor">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -72,7 +66,7 @@ const BottomNavigation = () => {
               d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
             />
           </svg>
-          <span className="text-xs mt-1">Conta</span>
+          <span className="text-xs mt-1">Perfil</span>
         </button>
       </div>
     </nav>

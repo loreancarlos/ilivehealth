@@ -64,7 +64,7 @@ async function getAddressFromCoordinates(coords: {
     console.log(data);
     if (data && data.display_name) {
       const parts = data.display_name.split(",");
-      return `${parts[0]},${parts[1]}`;
+      return `${parts[0]}, 70, ${parts[1]}`;
     }
     return "Localização encontrada";
   } catch (error) {
@@ -132,7 +132,7 @@ const AddressBar: React.FC<AddressBarProps> = ({ address }) => {
               ? address
               : "Aguardando permissão de localização"}
           </p>
-          <p className="text-xs text-gray-500">Entregar em</p>
+            <p className="text-xs text-gray-500">Casa</p>
         </div>
       </div>
     </div>

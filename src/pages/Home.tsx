@@ -6,7 +6,7 @@ import CategoryFilter from "../components/CategoryFilter";
 import SpecialOffers from "../components/SpecialOffers";
 import NearbyClinicsList from "../components/NearbyClinicsList";
 import PopularProfessionalsList from "../components/PopularProfessionalsList";
-import LoginModal from "../components/LoginModal";
+import NotificationModal from "../components/NotificationModal";
 import FilterModal from "../components/FilterModal";
 import {
   categories,
@@ -37,7 +37,7 @@ const Home: React.FC = () => {
       <NearbyClinicsList clinics={nearbyClinics} />
       <PopularProfessionalsList professionals={popularProfessionals} />
 
-      <LoginModal />
+      <NotificationModal />
       <FilterModal />
     </div>
   );

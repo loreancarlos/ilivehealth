@@ -11,6 +11,7 @@ import AppointmentScheduling from "./pages/AppointmentScheduling";
 import AppointmentSuccess from "./pages/AppointmentSuccess";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Profile from "./pages/Profile";
 import Header from "./components/Header";
 import BottomNavigation from "./components/BottomNavigation";
 import { useContext, useEffect } from "react";
@@ -34,6 +35,7 @@ function Router() {
       <Route path="/appointment/success" component={AppointmentSuccess} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
+      <Route path="/profile" component={Profile} />
       <Route component={NotFound} />
     </Switch>
   );
