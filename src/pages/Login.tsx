@@ -9,19 +9,23 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-
     try {
       await login(email, password);
       navigate("/profile");
     } catch (err) {
-      alert("Credenciais inválidas.");
+      setError(err instanceof Error ? err.message : "Credenciais inválidas");
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleInputChange = () => {
+    if (error) setError("");
   };
 
   const showRegister = () => {
@@ -51,7 +55,10 @@ const Login: React.FC = () => {
             className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
             placeholder="Seu email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              handleInputChange();
+            }}
             required
             disabled={isSubmitting}
           />
@@ -66,11 +73,20 @@ const Login: React.FC = () => {
             className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
             placeholder="Sua senha"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              handleInputChange();
+            }}
             required
             disabled={isSubmitting}
           />
         </div>
+
+        {error && (
+          <div className="text-red-500 text-sm text-center" role="alert">
+            {error}
+          </div>
+        )}
 
         <div className="text-right">
           <a href="#" className="text-sm text-primary font-medium">
