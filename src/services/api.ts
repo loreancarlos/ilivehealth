@@ -84,10 +84,7 @@ class ApiClient {
       }
       return response.json();
     } catch (error) {
-      if (
-        error.message.includes("fetch") ||
-        error.message.includes("servidor")
-      ) {
+      if (error.message.includes("fetch") || error.message.includes("failed")) {
         this.setShowConnectionTrouble?.(true);
       }
       throw Error(error.message);

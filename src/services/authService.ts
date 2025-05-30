@@ -20,7 +20,7 @@ export class AuthService {
         console.log(error);
         if (
           error.message.includes("fetch") ||
-          error.message.includes("servidor")
+          error.message.includes("failed")
         ) {
           throw new Error("");
         }
@@ -28,7 +28,7 @@ export class AuthService {
           throw new Error("Email ou senha inválidos");
         }
       }
-      throw new Error(error.message);
+      throw new Error("Erro inesperado");
     }
   }
 
