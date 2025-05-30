@@ -18,7 +18,10 @@ export class AuthService {
     } catch (error) {
       if (error instanceof Error) {
         console.log(error);
-        if (error.message.includes("fetch")) {
+        if (
+          error.message.includes("fetch") ||
+          error.message.includes("servidor")
+        ) {
           throw new Error("");
         }
         if (error.message.includes("Unauthorized")) {
