@@ -28,7 +28,7 @@ export class AuthService {
           throw new Error("Email ou senha inválidos");
         }
       }
-      throw new Error("Erro inesperado");
+      throw new Error(error.message);
     }
   }
 
