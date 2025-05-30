@@ -5,6 +5,9 @@ interface AppContextType {
   setShowBackButton: (show: boolean) => void;
   showNotificationModal: boolean;
   setShowNotificationModal: (show: boolean) => void;
+  showConnectionTrouble: boolean;
+  setShowConnectionTrouble: (show: boolean) => void;
+
   showFilterModal: boolean;
   setShowFilterModal: (show: boolean) => void;
   isLoggedIn: boolean;
@@ -23,6 +26,8 @@ export const AppContext = createContext<AppContextType>({
   setShowBackButton: () => {},
   showNotificationModal: false,
   setShowNotificationModal: () => {},
+  showConnectionTrouble: false,
+  setShowConnectionTrouble: () => {},
   showFilterModal: false,
   setShowFilterModal: () => {},
   isLoggedIn: false,
@@ -39,6 +44,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [showBackButton, setShowBackButton] = useState<boolean>(false);
   const [showNotificationModal, setShowNotificationModal] =
     useState<boolean>(false);
+  const [showConnectionTrouble, setShowConnectionTrouble] =
+    useState<boolean>(false);
   const [showFilterModal, setShowFilterModal] = useState<boolean>(false);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [userLocation, setUserLocation] = useState<{
@@ -53,6 +60,10 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
 
   const handleSetShowNotificationModal = useCallback((show: boolean) => {
     setShowNotificationModal(show);
+  }, []);
+
+  const handleSetShowConnectionTrouble = useCallback((show: boolean) => {
+    setShowConnectionTrouble(show);
   }, []);
 
   const handleSetShowFilterModal = useCallback((show: boolean) => {
@@ -77,6 +88,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         setShowBackButton: handleSetShowBackButton,
         showNotificationModal,
         setShowNotificationModal: handleSetShowNotificationModal,
+        showConnectionTrouble,
+        setShowConnectionTrouble: handleSetShowConnectionTrouble,
         showFilterModal,
         setShowFilterModal: handleSetShowFilterModal,
         isLoggedIn,

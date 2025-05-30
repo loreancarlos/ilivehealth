@@ -5,6 +5,11 @@ class ApiClient {
   private token: string | null;
   private ws: WebSocket | null = null;
   private messageHandlers: Map<string, (data: any) => void> = new Map();
+  private setShowConnectionTrouble?: (value: boolean) => void;
+
+  setConnectionTroubleHandler(handler: (value: boolean) => void) {
+    this.setShowConnectionTrouble = handler;
+  }
 
   constructor() {
     this.baseURL = API_URL;
@@ -63,22 +68,27 @@ class ApiClient {
       ...(this.token ? { Authorization: `Bearer ${this.token}` } : {}),
       ...options.headers,
     };
-
-    const response = await fetch(`${this.baseURL}${endpoint}`, {
-      ...options,
-      headers,
-    });
-
-    if (!response.ok) {
-      if (response.status === 401) {
-        this.clearToken();
-        throw new Error("Session expired");
+    try {
+      const response = await fetch(`${this.baseURL}${endpoint}`, {
+        ...options,
+        headers,
+      });
+      this.setShowConnectionTrouble?.(false);
+      if (!response.ok) {
+        if (response.status === 401) {
+          this.clearToken();
+          throw new Error("Unauthorized");
+        }
+        const error = await response.json();
+        throw new Error(error.error || "An error occurred");
       }
-      const error = await response.json();
-      throw new Error(error.error || "An error occurred");
+      return response.json();
+    } catch (error) {
+      if (error.message.includes("fetch")) {
+        this.setShowConnectionTrouble?.(true);
+      }
+      throw Error(error.message);
     }
-
-    return response.json();
   }
 
   // Auth

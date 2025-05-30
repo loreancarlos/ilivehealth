@@ -17,11 +17,15 @@ export class AuthService {
       return await api.login(email, password);
     } catch (error) {
       if (error instanceof Error) {
+        console.log(error);
         if (error.message.includes("fetch")) {
-          throw new Error("Erro de conexão com o servidor");
+          throw new Error("");
+        }
+        if (error.message.includes("Unauthorized")) {
+          throw new Error("Email ou senha inválidos");
         }
       }
-      throw new Error("Email ou senha inválidos");
+      throw new Error("Erro inesperado");
     }
   }
 

@@ -16,6 +16,7 @@ import Header from "./components/Header";
 import BottomNavigation from "./components/BottomNavigation";
 import { useContext, useEffect } from "react";
 import { AppContext } from "./context/AppContext";
+import { api } from "./services/api";
 
 function Router() {
   const [location] = useLocation();
@@ -42,6 +43,11 @@ function Router() {
 }
 
 function App() {
+  const { setShowConnectionTrouble } = useContext(AppContext);
+
+  useEffect(() => {
+    api.setConnectionTroubleHandler(setShowConnectionTrouble);
+  }, [setShowConnectionTrouble]);
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>

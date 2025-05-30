@@ -5,6 +5,7 @@ import { IoIosNotificationsOutline } from "react-icons/io";
 
 const Header = () => {
   const { showBackButton, setShowNotificationModal } = useContext(AppContext);
+  const { showConnectionTrouble } = useContext(AppContext);
   const [location, navigate] = useLocation();
 
   const handleBackNavigation = () => {
@@ -51,6 +52,13 @@ const Header = () => {
             <IoIosNotificationsOutline size={26} />
           </button>
         </div>
+      </div>
+      <div className="flex justify-center bg-red-500">
+        {showConnectionTrouble && (
+          <span className="text-primary font-bold text-sm text-white">
+            Sem conexão com a Internet
+          </span>
+        )}
       </div>
     </header>
   );
