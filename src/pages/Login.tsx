@@ -1,3 +1,4 @@
+import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react";
 import { useAuthStore } from "../store/authStore";
 import { useState } from "react";
 import { useLocation } from "wouter";
@@ -10,6 +11,7 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,6 +32,10 @@ const Login: React.FC = () => {
 
   const showRegister = () => {
     navigate("/register");
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -68,18 +74,30 @@ const Login: React.FC = () => {
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Senha
           </label>
-          <input
-            type="password"
-            className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-            placeholder="Sua senha"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              handleInputChange();
-            }}
-            required
-            disabled={isSubmitting}
-          />
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              placeholder="Sua senha"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                handleInputChange();
+              }}
+              required
+              disabled={isSubmitting}
+            />
+            <button
+              type="button"
+              className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-500"
+              onClick={togglePasswordVisibility}>
+              {showPassword ? (
+                <EyeOffIcon className="h-5 w-5" />
+              ) : (
+                <EyeIcon className="h-5 w-5" />
+              )}
+            </button>
+          </div>
         </div>
 
         {error && (
@@ -96,9 +114,16 @@ const Login: React.FC = () => {
 
         <button
           type="submit"
-          className="w-full bg-primary text-white py-3 rounded-lg font-medium mb-4"
+          className="w-full bg-primary text-white py-3 rounded-lg font-medium mb-4 disabled:opacity-50"
           disabled={isSubmitting}>
-          {isSubmitting ? "Entrando..." : "Entrar"}
+          {isSubmitting ? (
+            <div className="flex justify-center items-center gap-2">
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Entrando...
+            </div>
+          ) : (
+            "Entrar"
+          )}
         </button>
       </form>
 

@@ -48,6 +48,7 @@ function App() {
   useEffect(() => {
     api.setConnectionTroubleHandler(setShowConnectionTrouble);
   }, [setShowConnectionTrouble]);
+  
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
