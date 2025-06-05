@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { Professional } from "../types";
 import { popularProfessionals } from "../data/mockData";
+import { api } from "../services/api";
 
 interface ProfessionalState {
   professionals: Professional[];
@@ -17,13 +18,13 @@ export const useProfessionalStore = create<ProfessionalState>((set, get) => ({
   fetchProfessionals: async () => {
     try {
       set({ loading: true, error: null });
-      // Mock API call - replace with actual API
-      set({ professionals: popularProfessionals, loading: false });
+      const professionals = await api.getProfessionals();
+      set({ professionals, loading: false });
     } catch (error) {
       set({ error: "Failed to fetch professionals", loading: false });
     }
   },
   getProfessionalById: (id: string) => {
-    return get().professionals.find(professional => professional.id === id);
-  }
+    return get().professionals.find((professional) => professional.id === id);
+  },
 }));

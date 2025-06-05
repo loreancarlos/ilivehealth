@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuthStore } from "../store/authStore";
 import { useLocation } from "wouter";
 import {
@@ -93,6 +93,15 @@ const Profile: React.FC = () => {
   const [_, navigate] = useLocation();
   const [activeTab, setActiveTab] = useState("conversations");
 
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, [user]);
+
+  if (!user) {
+    return null; // Ou um <Navigate to="/login" /> se estiver usando React Router
+  }
   // Mock data - In real app, these would come from API
   const [conversations] = useState<Conversation[]>([
     {
@@ -243,11 +252,6 @@ const Profile: React.FC = () => {
       return date.toLocaleDateString("pt-BR");
     }
   };
-
-  if (!user) {
-    navigate("/login");
-    return null;
-  }
 
   return (
     <div className="px-4 py-6 pb-20">

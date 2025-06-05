@@ -1,23 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useParams } from "wouter";
 import { nearbyClinics } from "../data/mockData";
 import { Badge } from "../components/ui/badge";
+import { useClinicStore } from "../store/clinicStore";
 
 const ClinicDetail: React.FC = () => {
   const { id } = useParams();
   const [_, navigate] = useLocation();
-  
+
+  const {
+    clinics,
+    loading: clinicLoading,
+    error: clinicError,
+    fetchClinics,
+    getClinicById,
+  } = useClinicStore();
+
+  useEffect(() => {
+    fetchClinics();
+  }, [fetchClinics]);
+
   // Find the clinic with the matching ID
-  const clinic = nearbyClinics.find(c => c.id === id);
-  
+  const clinic = clinics.find((c) => c.id === id);
+
   const [selectedTab, setSelectedTab] = useState<string>("all");
-  
+
   if (!clinic) {
     return <div className="p-4">Clínica não encontrada</div>;
   }
 
   const scrollToProcedures = () => {
-    document.getElementById("proceduresSection")?.scrollIntoView({ behavior: "smooth" });
+    document
+      .getElementById("proceduresSection")
+      ?.scrollIntoView({ behavior: "smooth" });
   };
 
   const openMap = () => {
@@ -48,21 +63,22 @@ const ClinicDetail: React.FC = () => {
       {/* Clinic Images Gallery */}
       <div className="relative">
         <img
-          src={clinic.images[0]}
-          alt={`Fotos da ${clinic.name}`}
+          src={
+            /* clinic.images[0] */
+            "https://images.unsplash.com/photo-1629909613654-28e377c37b09?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=200"
+          }
+          alt={`Fotos da ${clinic.fantasyName}`}
           className="w-full h-64 object-cover"
         />
-        <button 
+        <button
           className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md"
-          onClick={openGallery}
-        >
+          onClick={openGallery}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5 text-gray-600"
             fill="none"
             viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
+            stroke="currentColor">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -76,34 +92,62 @@ const ClinicDetail: React.FC = () => {
       {/* Clinic Info */}
       <div className="px-4 py-4">
         <h1 className="text-2xl font-bold">{clinic.name}</h1>
-        
+
         <div className="flex items-center mt-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-4 w-4 text-yellow-400"
             viewBox="0 0 20 20"
-            fill="currentColor"
-          >
+            fill="currentColor">
             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
           </svg>
           <span className="ml-1 font-medium text-sm">{clinic.rating}</span>
           <span className="mx-2 text-gray-300">•</span>
-          <span className="text-sm text-gray-600">{clinic.reviewCount} avaliações</span>
+          <span className="text-sm text-gray-600">
+            {clinic.reviewCount} avaliações
+          </span>
           <span className="mx-2 text-gray-300">•</span>
-          <div className={`flex items-center ${clinic.isOpen ? 'bg-green-50' : 'bg-red-50'} px-2 py-0.5 rounded-md`}>
+          <div
+            className={`flex items-center ${
+              clinic.isOpen ? "bg-green-50" : "bg-red-50"
+            } px-2 py-0.5 rounded-md`}>
             {clinic.isOpen ? (
               <>
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-accent mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-3 w-3 text-accent mr-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M5 13l4 4L19 7"
+                  />
                 </svg>
-                <span className="text-xs font-medium text-accent">Aberto agora</span>
+                <span className="text-xs font-medium text-accent">
+                  Aberto agora
+                </span>
               </>
             ) : (
               <>
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-red-500 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-3 w-3 text-red-500 mr-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
-                <span className="text-xs font-medium text-red-500">Fechado agora</span>
+                <span className="text-xs font-medium text-red-500">
+                  Fechado agora
+                </span>
               </>
             )}
           </div>
@@ -115,8 +159,7 @@ const ClinicDetail: React.FC = () => {
             className="h-4 w-4 mr-1"
             fill="none"
             viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
+            stroke="currentColor">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -132,15 +175,14 @@ const ClinicDetail: React.FC = () => {
           </svg>
           <span>{`${clinic.address.street}, ${clinic.address.number} - ${clinic.address.neighborhood}, ${clinic.address.city}/${clinic.address.state}`}</span>
         </div>
-        
+
         <div className="mt-2 flex items-center text-sm text-gray-600">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-4 w-4 mr-1"
             fill="none"
             viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
+            stroke="currentColor">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -161,21 +203,18 @@ const ClinicDetail: React.FC = () => {
         <div className="mt-5 flex space-x-3">
           <button
             className="flex-1 bg-primary text-white py-3 rounded-lg font-medium"
-            onClick={scrollToProcedures}
-          >
+            onClick={scrollToProcedures}>
             Agendar
           </button>
           <button
             className="flex justify-center items-center px-4 py-3 border border-gray-300 rounded-lg"
-            onClick={openMap}
-          >
+            onClick={openMap}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5 text-gray-600"
               fill="none"
               viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
+              stroke="currentColor">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -192,15 +231,13 @@ const ClinicDetail: React.FC = () => {
           </button>
           <button
             className="flex justify-center items-center px-4 py-3 border border-gray-300 rounded-lg"
-            onClick={callClinic}
-          >
+            onClick={callClinic}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5 text-gray-600"
               fill="none"
               viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
+              stroke="currentColor">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -221,84 +258,103 @@ const ClinicDetail: React.FC = () => {
       </div>
 
       {/* Available Procedures */}
-      <div className="px-4 py-4 border-t border-gray-200" id="proceduresSection">
-        <h2 className="text-lg font-semibold mb-4">Procedimentos disponíveis</h2>
-        
+      <div
+        className="px-4 py-4 border-t border-gray-200"
+        id="proceduresSection">
+        <h2 className="text-lg font-semibold mb-4">
+          Procedimentos disponíveis
+        </h2>
+
         {/* Category filter tabs */}
         <div className="flex overflow-x-auto space-x-2 py-2 mb-4 scrollbar-hide">
-          <button 
-            className={`px-4 py-2 ${selectedTab === 'all' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700'} text-sm font-medium rounded-full`}
-            onClick={() => setSelectedTab('all')}
-          >
+          <button
+            className={`px-4 py-2 ${
+              selectedTab === "all"
+                ? "bg-primary text-white"
+                : "bg-gray-100 text-gray-700"
+            } text-sm font-medium rounded-full`}
+            onClick={() => setSelectedTab("all")}>
             Todos
           </button>
-          <button 
-            className={`px-4 py-2 ${selectedTab === 'consultations' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700'} text-sm font-medium rounded-full`}
-            onClick={() => setSelectedTab('consultations')}
-          >
+          <button
+            className={`px-4 py-2 ${
+              selectedTab === "consultations"
+                ? "bg-primary text-white"
+                : "bg-gray-100 text-gray-700"
+            } text-sm font-medium rounded-full`}
+            onClick={() => setSelectedTab("consultations")}>
             Consultas
           </button>
-          <button 
-            className={`px-4 py-2 ${selectedTab === 'exams' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700'} text-sm font-medium rounded-full`}
-            onClick={() => setSelectedTab('exams')}
-          >
+          <button
+            className={`px-4 py-2 ${
+              selectedTab === "exams"
+                ? "bg-primary text-white"
+                : "bg-gray-100 text-gray-700"
+            } text-sm font-medium rounded-full`}
+            onClick={() => setSelectedTab("exams")}>
             Exames
           </button>
-          <button 
-            className={`px-4 py-2 ${selectedTab === 'aesthetics' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700'} text-sm font-medium rounded-full`}
-            onClick={() => setSelectedTab('aesthetics')}
-          >
+          <button
+            className={`px-4 py-2 ${
+              selectedTab === "aesthetics"
+                ? "bg-primary text-white"
+                : "bg-gray-100 text-gray-700"
+            } text-sm font-medium rounded-full`}
+            onClick={() => setSelectedTab("aesthetics")}>
             Estética
           </button>
         </div>
-        
+
         {/* Procedures list */}
-        {clinic.professionals.flatMap(professional => professional.procedures).map((procedure, index) => (
-          <div
-            key={`${procedure.id}-${index}`}
-            className="mb-4 p-4 bg-white rounded-xl shadow-sm border border-gray-100"
-            onClick={() => selectProcedure(procedure.id)}
-          >
-            <div className="flex justify-between">
-              <div>
-                <h3 className="font-semibold">{procedure.name}</h3>
-                <p className="text-sm text-gray-500 mt-1">{procedure.duration}</p>
+        {clinic.professionals
+          .flatMap((professional) => professional.procedures)
+          .map((procedure, index) => (
+            <div
+              key={`${procedure.id}-${index}`}
+              className="mb-4 p-4 bg-white rounded-xl shadow-sm border border-gray-100"
+              onClick={() => selectProcedure(procedure.id)}>
+              <div className="flex justify-between">
+                <div>
+                  <h3 className="font-semibold">{procedure.name}</h3>
+                  <p className="text-sm text-gray-500 mt-1">
+                    {procedure.duration}
+                  </p>
+                </div>
+                <div>
+                  <span className="font-medium text-primary">
+                    {new Intl.NumberFormat("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    }).format(procedure.price)}
+                  </span>
+                </div>
               </div>
-              <div>
-                <span className="font-medium text-primary">
-                  {new Intl.NumberFormat('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL'
-                  }).format(procedure.price)}
-                </span>
+              <div className="mt-4">
+                {procedure.tags.map((tag, tagIndex) => (
+                  <Badge
+                    key={tagIndex}
+                    variant={
+                      tag.toLowerCase().includes("convênio") ? "green" : "blue"
+                    }
+                    className="mr-2">
+                    {tag}
+                  </Badge>
+                ))}
               </div>
             </div>
-            <div className="mt-4">
-              {procedure.tags.map((tag, tagIndex) => (
-                <Badge 
-                  key={tagIndex} 
-                  variant={tag.toLowerCase().includes('convênio') ? 'green' : 'blue'} 
-                  className="mr-2"
-                >
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-          </div>
-        ))}
+          ))}
       </div>
 
       {/* Specialists section */}
       <div className="px-4 py-4 border-t border-gray-200">
         <h2 className="text-lg font-semibold mb-4">Especialistas</h2>
-        
+
         <div className="grid grid-cols-2 gap-4">
-          {clinic.professionals.map(professional => (
+          {clinic.professionals.map((professional) => (
             <div
               key={professional.id}
               className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100"
-              onClick={() => handleProfessionalClick(professional.id)}
-            >
+              onClick={() => handleProfessionalClick(professional.id)}>
               <img
                 src={professional.profileImage}
                 alt={`Foto do(a) ${professional.name}`}
@@ -306,17 +362,20 @@ const ClinicDetail: React.FC = () => {
               />
               <div className="p-3">
                 <h3 className="font-medium text-base">{professional.name}</h3>
-                <p className="text-xs text-gray-500 mt-1">{professional.specialty}</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  {professional.specialty}
+                </p>
                 <div className="mt-2 flex items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-3 w-3 text-yellow-400"
                     viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
+                    fill="currentColor">
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                   </svg>
-                  <span className="ml-1 text-xs font-medium">{professional.rating}</span>
+                  <span className="ml-1 text-xs font-medium">
+                    {professional.rating}
+                  </span>
                 </div>
               </div>
             </div>
@@ -328,9 +387,11 @@ const ClinicDetail: React.FC = () => {
       <div className="px-4 py-4 border-t border-gray-200">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold">Avaliações</h2>
-          <button className="text-primary text-sm font-medium">Ver todas</button>
+          <button className="text-primary text-sm font-medium">
+            Ver todas
+          </button>
         </div>
-        
+
         {/* Overall rating */}
         <div className="flex items-center mb-4">
           <div className="text-4xl font-bold mr-4">{clinic.rating}</div>
@@ -340,20 +401,25 @@ const ClinicDetail: React.FC = () => {
                 <svg
                   key={i}
                   xmlns="http://www.w3.org/2000/svg"
-                  className={`h-5 w-5 ${i < Math.floor(clinic.rating) ? "text-yellow-400" : "text-gray-300"}`}
+                  className={`h-5 w-5 ${
+                    i < Math.floor(clinic.rating)
+                      ? "text-yellow-400"
+                      : "text-gray-300"
+                  }`}
                   viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
+                  fill="currentColor">
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
               ))}
             </div>
-            <p className="text-sm text-gray-600 mt-1">Baseado em {clinic.reviewCount} avaliações</p>
+            <p className="text-sm text-gray-600 mt-1">
+              Baseado em {clinic.reviewCount} avaliações
+            </p>
           </div>
         </div>
-        
+
         {/* Reviews list */}
-        {clinic.reviews.map(review => (
+        {clinic.reviews.map((review) => (
           <div key={review.id} className="mb-4 pb-4 border-b border-gray-200">
             <div className="flex justify-between mb-2">
               <div className="font-medium">{review.userName}</div>
@@ -364,10 +430,11 @@ const ClinicDetail: React.FC = () => {
                 <svg
                   key={i}
                   xmlns="http://www.w3.org/2000/svg"
-                  className={`h-4 w-4 ${i < review.rating ? "text-yellow-400" : "text-gray-300"}`}
+                  className={`h-4 w-4 ${
+                    i < review.rating ? "text-yellow-400" : "text-gray-300"
+                  }`}
                   viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
+                  fill="currentColor">
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
               ))}

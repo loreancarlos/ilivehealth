@@ -42,7 +42,7 @@ export interface Professional {
 
 export interface Clinic {
   id: string;
-  name: string;
+  fantasyName: string;
   logo?: string;
   images: string[];
   address: Address;

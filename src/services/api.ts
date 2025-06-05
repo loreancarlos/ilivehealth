@@ -104,7 +104,7 @@ class ApiClient {
     return response;
   }
 
-  async changePassword(currentPassword: string, newPassword: string) {
+  /* async changePassword(currentPassword: string, newPassword: string) {
     return this.request<void>("/auth/change-password", {
       method: "POST",
       body: JSON.stringify({ currentPassword, newPassword }),
@@ -117,7 +117,7 @@ class ApiClient {
       body: JSON.stringify({ userId, newPassword }),
     });
   }
-
+ */
   // Users
   async getUsers() {
     return this.request<any[]>("/users");
@@ -154,7 +154,12 @@ class ApiClient {
     return this.request<any[]>("/clinics");
   }
 
-  async getClinicById(id: string) {
+  // Professionals
+  async getProfessionals() {
+    return this.request<any[]>("/professionals");
+  }
+
+  /* async getClinicById(id: string) {
     return this.request<any>(`/clinics/${id}`);
   }
 
@@ -176,214 +181,9 @@ class ApiClient {
     return this.request<void>(`/clinics/${id}`, {
       method: "DELETE",
     });
-  }
+  } */
 
-  // Developments
-  async getDevelopments() {
-    return this.request<any[]>("/developments");
-  }
-
-  async createDevelopment(data: any) {
-    return this.request<any>("/developments", {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-  }
-
-  async updateDevelopment(id: string, data: any) {
-    return this.request<any>(`/developments/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(data),
-    });
-  }
-
-  async deleteDevelopment(id: string) {
-    return this.request<void>(`/developments/${id}`, {
-      method: "DELETE",
-    });
-  }
-
-  // Sales
-  async getSales() {
-    return this.request<any[]>("/sales");
-  }
-
-  async createSale(data: any) {
-    return this.request<any>("/sales", {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-  }
-
-  async updateSale(id: string, data: any) {
-    return this.request<any>(`/sales/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(data),
-    });
-  }
-
-  async deleteSale(id: string) {
-    return this.request<void>(`/sales/${id}`, {
-      method: "DELETE",
-    });
-  }
-
-  async updateInstallmentStatus(
-    saleId: string,
-    installmentNumber: number,
-    data: { billIssued: boolean; billPaid: boolean }
-  ) {
-    return this.request<any>(
-      `/sales/${saleId}/installments/${installmentNumber}`,
-      {
-        method: "PATCH",
-        body: JSON.stringify(data),
-      }
-    );
-  }
-
-  // Teams
-  async getTeams() {
-    return this.request<any[]>("/teams");
-  }
-
-  async createTeam(data: any) {
-    return this.request<any>("/teams", {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-  }
-
-  async updateTeam(id: string, data: any) {
-    return this.request<any>(`/teams/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(data),
-    });
-  }
-
-  async deleteTeam(id: string) {
-    return this.request<void>(`/teams/${id}`, {
-      method: "DELETE",
-    });
-  }
-
-  async addTeamMember(teamId: string, userId: string) {
-    return this.request<any>("/teams/members", {
-      method: "POST",
-      body: JSON.stringify({ teamId, userId }),
-    });
-  }
-
-  async removeTeamMember(userId: string) {
-    return this.request<any>(`/teams/members/${userId}`, {
-      method: "DELETE",
-    });
-  }
-
-  // Leads
-  async getLeads() {
-    return this.request<any[]>("/leads");
-  }
-
-  async createLead(data: any) {
-    return this.request<any>("/leads", {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-  }
-  async createImportLead(data: any) {
-    return this.request<any>("/leads/import", {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-  }
-
-  async updateLead(id: string, data: any) {
-    return this.request<any>(`/leads/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(data),
-    });
-  }
-
-  async deleteLead(id: string) {
-    return this.request<void>(`/leads/${id}`, {
-      method: "DELETE",
-    });
-  }
-
-  // Business
-  async getBusiness() {
-    return this.request<any[]>("/business");
-  }
-
-  async createBusiness(data: any) {
-    return this.request<any>("/business", {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-  }
-
-  async updateBusiness(id: string, data: any) {
-    return this.request<any>(`/business/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(data),
-    });
-  }
-
-  async deleteBusiness(id: string) {
-    return this.request<void>(`/business/${id}`, {
-      method: "DELETE",
-    });
-  }
-
-  // Call Mode Sessions
-  async getCallModeSessions() {
-    return this.request<any[]>("/callModeSessions");
-  }
-
-  async createCallModeSession(data: {
-    startTime: Date;
-    endTime: Date;
-    businessViewed: string[];
-    answeredCalls: number;
-    talkedCalls: number;
-    scheduledCalls: number;
-    whatsappCalls: number;
-    notInterestCalls: number;
-    recallCalls: number;
-    voicemailCalls: number;
-    invalidNumberCalls: number;
-    notReceivingCalls: number;
-  }) {
-    return this.request<any>("/callModeSessions", {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-  }
-
-  async updateCallModeSession(
-    id: string,
-    data: {
-      endTime?: Date;
-      businessViewed?: string[];
-      answeredCalls?: number;
-      talkedCalls: number;
-      scheduledCalls?: number;
-      whatsappCalls?: number;
-      notInterestCalls?: number;
-      recallCalls?: number;
-      voicemailCalls?: number;
-      invalidNumberCalls?: number;
-      notReceivingCalls?: number;
-    }
-  ) {
-    return this.request<any>(`/callModeSessions/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(data),
-    });
-  }
-
-  // Google Calendar methods
+  /* // Google Calendar methods
   async updateGoogleCalendar(
     userId: string,
     data: {
@@ -428,7 +228,7 @@ class ApiClient {
       method: "POST",
       body: JSON.stringify(data),
     });
-  }
+  } */
 }
 
 export const api = new ApiClient();

@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
-import { MapPin } from "lucide-react";
+import { MapPin, ChevronDown } from "lucide-react";
 import { useToast } from "../hooks/use-toast";
+import AddressModal from "./AddressModal";
 
 interface AddressBarProps {
   address?: string;
@@ -77,6 +78,7 @@ const AddressBar: React.FC<AddressBarProps> = ({ address }) => {
   const { userLocation, setUserLocation } = useContext(AppContext);
   const [currentAddress, setCurrentAddress] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { toast } = useToast();
 
   // Efeito para solicitar a localização ao montar o componente
@@ -118,24 +120,53 @@ const AddressBar: React.FC<AddressBarProps> = ({ address }) => {
     };
   }, [setUserLocation, toast]);
 
+  const handleAddressSelect = (selectedAddress: string) => {
+    setCurrentAddress(selectedAddress);
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
-    <div className="bg-white w-full py-2 px-4 flex items-center shadow-sm">
-      <div className="flex items-center">
-        <MapPin className="h-5 w-5 text-blue-500 mr-2" />
-        <div>
-          <p className="text-sm font-semibold">
-            {isLoading
-              ? "Buscando sua localização..."
-              : currentAddress
-              ? currentAddress
-              : address
-              ? address
-              : "Aguardando permissão de localização"}
-          </p>
+    <>
+      <div className="bg-white w-full py-2 px-4 flex items-center shadow-sm">
+        <div className="flex items-center flex-1">
+          <MapPin className="h-5 w-5 text-blue-500 mr-2" />
+          <div className="flex-1">
+            <p className="text-sm font-semibold">
+              {isLoading
+                ? "Buscando sua localização..."
+                : currentAddress
+                ? currentAddress
+                : address
+                ? address
+                : "Aguardando permissão de localização"}
+            </p>
             <p className="text-xs text-gray-500">Casa</p>
+          </div>
+        </div>
+        <div className="flex justify-center">
+          <button
+            onClick={openModal}
+            className="mr-1 p-1 hover:bg-gray-100 rounded-full transition-colors"
+            disabled={isLoading}>
+            <ChevronDown className="h-4 w-4 text-gray-600" />
+          </button>
         </div>
       </div>
-    </div>
+
+      <AddressModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onSelectAddress={handleAddressSelect}
+        currentAddress={currentAddress}
+      />
+    </>
   );
 };
 

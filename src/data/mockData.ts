@@ -309,7 +309,7 @@ const scheduleClinic3: Schedule[] = [
 export const nearbyClinics: Clinic[] = [
   {
     id: "clinic1",
-    name: "Clínica São Paulo",
+    fantasyName: "Clínica São Paulo",
     images: [
       "https://images.unsplash.com/photo-1629909613654-28e377c37b09?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=200"
     ],
@@ -336,7 +336,7 @@ export const nearbyClinics: Clinic[] = [
   },
   {
     id: "clinic2",
-    name: "Clínica Estética Renova",
+    fantasyName: "Clínica Estética Renova",
     images: [
       "https://pixabay.com/get/g3cdf3c9c2fd4afd6cee593d38758191126cf152c580c03ea7085f16530511f575f4398f39453fd1ed38e65c18d4f313f3ee3435c9237ea09392b02039fc11db0_1280.jpg"
     ],
@@ -363,7 +363,7 @@ export const nearbyClinics: Clinic[] = [
   },
   {
     id: "clinic3",
-    name: "Centro Médico Vida",
+    fantasyName: "Centro Médico Vida",
     images: [
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-d9KifLJo3SOElmcQ7sNq7otWq31jrtvLyw&s"
     ],
